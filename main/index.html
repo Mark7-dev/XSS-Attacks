@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XSS Attack Lessons</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Libre+Barcode+39&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+   <h1><u>Cross Site Scripting Attacks (XSS)</u></h1>
+</header>
+
+
+
+
+<main>
+
+    <section id="xss-intro">
+        <h2>What is an XSS Attack?</h2>
+        <p class = "maintext">
+            Cross-Site Scripting (XSS) attacks
+            are a type of injection, where
+            malicious scripts are injected
+            into trusted websites. These
+            attacks occur when an attacker
+            uses a web application
+            to send malicious code, generally
+            in the form of a browser-side
+            script, to a different end user.
+            Attackers often initiate an XSS
+            attack by sending a malicious link
+            to a user and enticing the user
+            to click it.
+        </p>
+    </section>
+    <section>
+        <h2>How are users impacted by XSS attacks</h2>
+        <p class = "maintext">
+            The variety of attacks based
+            on XSS is almost limitless,
+            but they commonly include
+            transmitting private data,
+            like cookies or other session
+            information, to the attacker,
+            redirecting the victim to web
+            content controlled by the attacker,
+            or performing other malicious
+            operations on the user’s machine
+            under the guise of the vulnerable site.
+        </p>
+    </section>
+
+
+    <section class="hidden">
+        <h2>How does cross site scripting work?</h2>
+        <img class="diagram" src = ../assets/diagram.png>
+    </section>
+
+    <section class = "hidden">
+        <h2 class="search-form-header">How do you test for XSS vunerabilities?</h2>
+        <p class="maintext">
+            You can confirm most kinds of XSS vulnerability
+            by injecting some sort of harmless script.
+            It is common to test for XSS vunerabilities by using the alert()
+            function for this because it's short,
+            harmless, and pretty hard to miss when it's
+            successfully called.
+        </p>
+        <p class = "maintext">
+            This is an example of a vunerable
+            input field. In this input field a
+            malicious attacker could inject code.
+
+
+        </p>
+        </section>
+        <section class="hidden">
+            <h2>Code Examples of different XSS attacks</h2>
+            <br>
+            <h3>Reflected XSS attack</h3>
+            <p class = "maintext">
+                Reflected XSS attacks are where the malicious script comes from the current HTTP request.
+                Try inserting this code at the end of the URL of this website.
+            </p>
+            <img class="diagram" src = "../assets/url.png"/>
+            <br>
+            <br>
+            <code>&lt;img src onerror="alert('This is a reflected XSS attack')" /&gt;</code>
+            <button class = "copyTextButton" onclick="copyText1()"><img class = "clipbored" src = "../assets/clipboard.png" alt = "clipboard"></button>
+            <br>
+
+            <h3>Stored XSS attack</h3>
+            <p class = "maintext">
+                A stored XSS attack occurs when a web
+                application fails to properly sanitise
+                user-supplied input before storing it
+                in a database or server-side resource
+                (e.g., a message board, comment system
+                , or user profile). When this unsanitised
+                data is later retrieved and rendered on
+                a web page, it can allow an attacker's
+                malicious script to execute in
+                the context of a legitimate user's
+                browser session. Try this simple stored XSS attack,
+                the page will reload, but you should see the
+                HTML code below the vulnerable search bar.
+            </p>
+            <code>&lt;h1 style="color:red;font-size:50px;"&gt;This is a stored XSS attack!&lt;/h1&gt;</code>
+            <button class = "copyTextButton" onclick="copyText()"><img class = "clipbored" src = "../assets/clipboard.png" alt = "clipboard"></button>
+            <br>
+            <form class="search-form" autocomplete="off">
+
+                <input class="search-input" id="query-input" type="text" name="query" />
+                <br>
+                <br>
+                <button class="search-button" type="submit" role="button">Search</button>
+            </form>
+            <p class="search-query">You Queried: <span id="query-output" class="query"></span></p>
+
+
+            <h3>DOM-based XSS attack</h3>
+            <p class="maintext">
+                DOM-based XSS vulnerabilities usually arise when JavaScript takes data from an attacker-controllable source, such as the URL, and passes it to a sink that supports dynamic code execution, such as eval() or innerHTML. This enables attackers to execute malicious JavaScript, which typically allows them to hijack other users' accounts. (rewrite)
+            </p>
+        </section>
+
+
+
+
+    <section class="hidden">
+        <h2>How to prevent XSS attacks</h2>
+        <p class="maintext">XSS attacks can be mostly be prevented through encoding and validating user input</p>
+
+        <h3>Encoding user input</h3>
+        <p class="maintext">
+            Encoding should be implemented just
+            before inserting user-controlled data
+            onto a page since the encoding method
+            depends on the context of the insertion.
+            For instance, values within a
+            JavaScript string needs a
+            different form of encoding compared
+            to data in an HTML context.
+        </p>
+
+        <p class="maintext">
+            For example in an HTML
+            context this is how you
+            would encode non whitelisted
+            values
+        </p>
+            <ul>
+                <li><code class="example1"><</code><p class="example1">&nbsp;turns into &nbsp;</p><code class="example1">&amp;lt;</code></li>
+            </ul>
+            <ul>
+                <li><code class="example1">></code><p class="example1">&nbsp;turns into &nbsp;</p><code class="example1">&amp;gt;</code></li>
+            </ul>
+        <p>
+            In a JavaScript string context, non-alphanumeric values should be Unicode-escaped:
+        </p>
+        <ul>
+            <li ><code class="example1">></code><p class="example1">&nbsp;turns into &nbsp;</p><code class="example1">\u003e</code></li>
+        </ul>
+        <ul>
+            <li><code class="example1"><</code><p class="example1">&nbsp;turns into &nbsp;</p><code class="example1">\u003c</code></li>
+        </ul>
+
+        <p class="maintext">
+            Sometimes you'll need to
+            apply multiple layers of
+            encoding, in the correct
+            order. For example, to
+            safely embed user input
+            inside an event handler,
+            you need to deal with
+            both the JavaScript context
+            and the HTML context.
+            So you need to first
+            Unicode-escape the
+            input, and then
+            HTML-encode it:
+        </p>
+        <code>&lt;a href="#" onclick="x='This string needs two layers of escaping'"&gt;test&lt;/a&gt;</code>
+
+        <h3>Validating user input</h3>
+
+        <p class="maintext">
+            Encoding is probably the most important line
+            of XSS defense, but it is not sufficient to
+            prevent XSS vulnerabilities in every context.
+            You should also validate input as strictly
+            as possible at the point when it is first
+            received from a user.
+        </p>
+
+        <p>
+            Try this code from earlier,
+            the only difference is that
+            this search bar is using sanitisation
+            to prevent malicious code injections.
+        </p>
+        <code>&lt;img src onerror="alert('This is a reflected XSS attack')" /&gt;</code>
+        <button class = "copyTextButton" onclick="copyText1()"><img class = "clipbored" src = "../assets/clipboard.png" alt = "clipboard"></button>
+
+
+
+        <form class="search-form" autocomplete="off">
+            <input class="search-input" id="query-input1" type="text" name="query1" />
+            <br>
+            <br>
+            <button class="search-button" type="submit" role="button">Search</button>
+        </form>
+        <p class="search-query1">You Queried: <span id="query-output1" class="query1"></span></p>
+
+        <h3>Content Security Policy </h3>
+
+        <p>
+            Content Security Policy (CSP) is an added layer
+            of security that helps to detect and mitigate
+            certain types of attacks, including Cross-Site
+            Scripting (XSS) and data injection attacks.
+            These attacks are used for everything from
+            data theft, to site defacement, to malware
+            distribution.
+        </p>
+
+        <p>
+            Configuring Content Security Policy involves
+            adding the Content-Security-Policy HTTP header
+            to a web page and giving it values to control
+            what resources the user agent is allowed to
+            load for that page.
+        </p>
+
+        <h4>Specifying your policy</h4>
+        <p>You can use the Content-Security-Policy HTTP header to specify your policy, like this:</p>
+        <code>Content-Security-Policy: policy</code>
+
+
+    </section>
+
+
+
+
+
+
+
+
+    <section class="hidden">
+        <h2>What technologies do XSS attacks affect</h2>
+        <p class = "maintext">
+            Cross-Site Scripting only affects websites,
+            however XSS attacks can also affect other
+            web related technology such as web applications,
+            web browsers and browser extensions
+        </p>
+    </section>
+
+
+
+</main>
+
+
+<script defer src="script.js"></script>
+</body>
+</html>
